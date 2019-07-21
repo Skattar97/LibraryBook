@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BookLibraryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BookTable">
+          <Key>
+            <PropertyRef Name="BookNo" />
+          </Key>
+          <Property Name="BookNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BookName" Type="nchar" MaxLength="10" />
+          <Property Name="BookAuthor" Type="nchar" MaxLength="10" />
+          <Property Name="Copies" Type="int" />
+        </EntityType>
+        <EntityType Name="Cust">
+          <Key>
+            <PropertyRef Name="CustID" />
+          </Key>
+          <Property Name="CustID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerName" Type="nchar" MaxLength="10" />
+          <Property Name="BookID" Type="int" />
+          <Property Name="Email" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="NameTable">
+          <Key>
+            <PropertyRef Name="N_id" />
+          </Key>
+          <Property Name="N_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="10" />
+          <Property Name="Age" Type="int" />
+        </EntityType>
+        <EntityType Name="Usertable">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nchar" MaxLength="10" />
+          <Property Name="Password" Type="nchar" MaxLength="10" />
+          <Property Name="N_id" Type="int" />
+        </EntityType>
+        <Association Name="FK_UserTAble_NameTable">
+          <End Role="NameTable" Type="Self.NameTable" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Usertable" Type="Self.Usertable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NameTable">
+              <PropertyRef Name="N_id" />
+            </Principal>
+            <Dependent Role="Usertable">
+              <PropertyRef Name="N_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BookLibraryModelStoreContainer">
+          <EntitySet Name="BookTable" EntityType="Self.BookTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cust" EntityType="Self.Cust" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NameTable" EntityType="Self.NameTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usertable" EntityType="Self.Usertable" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_UserTAble_NameTable" Association="Self.FK_UserTAble_NameTable">
+            <End Role="NameTable" EntitySet="NameTable" />
+            <End Role="Usertable" EntitySet="Usertable" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BookLibraryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BookTable">
+          <Key>
+            <PropertyRef Name="BookNo" />
+          </Key>
+          <Property Name="BookNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BookName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="BookAuthor" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Copies" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Cust">
+          <Key>
+            <PropertyRef Name="CustID" />
+          </Key>
+          <Property Name="CustID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="BookID" Type="Int32" />
+          <Property Name="Email" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="NameTable">
+          <Key>
+            <PropertyRef Name="N_id" />
+          </Key>
+          <Property Name="N_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Age" Type="Int32" />
+          <NavigationProperty Name="Usertables" Relationship="Self.FK_UserTAble_NameTable" FromRole="NameTable" ToRole="Usertable" />
+        </EntityType>
+        <EntityType Name="Usertable">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="N_id" Type="Int32" />
+          <NavigationProperty Name="NameTable" Relationship="Self.FK_UserTAble_NameTable" FromRole="Usertable" ToRole="NameTable" />
+        </EntityType>
+        <Association Name="FK_UserTAble_NameTable">
+          <End Role="NameTable" Type="Self.NameTable" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Usertable" Type="Self.Usertable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NameTable">
+              <PropertyRef Name="N_id" />
+            </Principal>
+            <Dependent Role="Usertable">
+              <PropertyRef Name="N_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BookLibraryEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BookTables" EntityType="Self.BookTable" />
+          <EntitySet Name="Custs" EntityType="Self.Cust" />
+          <EntitySet Name="NameTables" EntityType="Self.NameTable" />
+          <EntitySet Name="Usertables" EntityType="Self.Usertable" />
+          <AssociationSet Name="FK_UserTAble_NameTable" Association="Self.FK_UserTAble_NameTable">
+            <End Role="NameTable" EntitySet="NameTables" />
+            <End Role="Usertable" EntitySet="Usertables" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BookLibraryModelStoreContainer" CdmEntityContainer="BookLibraryEntities1">
+          <EntitySetMapping Name="BookTables">
+            <EntityTypeMapping TypeName="BookLibraryModel.BookTable">
+              <MappingFragment StoreEntitySet="BookTable">
+                <ScalarProperty Name="BookNo" ColumnName="BookNo" />
+                <ScalarProperty Name="BookName" ColumnName="BookName" />
+                <ScalarProperty Name="BookAuthor" ColumnName="BookAuthor" />
+                <ScalarProperty Name="Copies" ColumnName="Copies" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Custs">
+            <EntityTypeMapping TypeName="BookLibraryModel.Cust">
+              <MappingFragment StoreEntitySet="Cust">
+                <ScalarProperty Name="CustID" ColumnName="CustID" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="BookID" ColumnName="BookID" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NameTables">
+            <EntityTypeMapping TypeName="BookLibraryModel.NameTable">
+              <MappingFragment StoreEntitySet="NameTable">
+                <ScalarProperty Name="N_id" ColumnName="N_id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usertables">
+            <EntityTypeMapping TypeName="BookLibraryModel.Usertable">
+              <MappingFragment StoreEntitySet="Usertable">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="N_id" ColumnName="N_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
